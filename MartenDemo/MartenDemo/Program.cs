@@ -1,4 +1,5 @@
 using Marten;
+using MartenDemo.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMarten(o=>
@@ -9,21 +10,13 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/create", async (IDocumentSession session) =>
-{
-    session.Store(new User("Foo", 20));
-    await session.SaveChangesAsync();
-    return "created!";
-});
 
-app.MapGet("/{guid}", (Guid guid, IQuerySession session) =>
-{
-    return session.LoadAsync<User>(guid);
-});
+//CreateAndGet.TryThis(app);
+SelfAgregatingProjections.TryThis(app);
 
 app.Run();
 
-public record User(string Name, int Age)
-{
-    public Guid Id { get; set; }
-}
+
+
+
+
